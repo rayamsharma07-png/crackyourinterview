@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CrackYourInterview</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Welcome to CrackYourInterview</h1>
+  <p>Your journey to confident speaking starts here.</p>
+
+  <button>Start Free Practice</button>
+
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>🎤 Step 1: Practice Daily</h3>
+        <p>Answer mock interview questions and record your voice.</p>
+      </div>
+      <div class="step">
+        <h3>🧠 Step 2: Get AI Feedback</h3>
+        <p>Receive instant scores for fluency, grammar, and clarity.</p>
+      </div>
+      <div class="step">
+        <h3>📈 Step 3: Track Progress</h3>
+        <p>View your scores, improvement trends, and unlock achievements.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <blockquote>“Confidence isn’t given. It’s practiced.”</blockquote>
+    <p class="quote-author">— CrackYourInterview</p>
+  </section>
+
+  <section class="testimonials">
+    <h2>What Learners Say</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <p>“CrackYourInterview helped me speak with clarity and confidence. I landed my dream job!”</p>
+        <span>— Priya, Software Engineer</span>
+      </div>
+      <div class="testimonial">
+        <p>“The AI feedback was a game-changer. I improved my accent and got shortlisted in 3 interviews.”</p>
+        <span>— Arjun, Data Analyst</span>
+      </div>
+      <div class="testimonial">
+        <p>“I practiced daily and tracked my progress. The visual scores kept me motivated!”</p>
+        <span>— Neha, Marketing Associate</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Speak with Confidence?</h2>
+    <p>Start your free practice now and unlock your potential.</p>
+    <a href="#start" class="cta-button">Start Free Practice</a>
+  </section>
+
+  <hr />
+
+  <h2>Login / Signup</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <br /><br />
+  <button onclick="signup()">Sign Up</button>
+  <button onclick="login()">Login</button>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBjVn0gFVaC1R4b4atHJDBgwR7yAipto",
+      authDomain: "crackyourinterview-db541.firebaseapp.com",
+      projectId: "crackyourinterview-db541",
+      storageBucket: "crackyourinterview-db541.appspot.com",
+      messagingSenderId: "218429120531",
+      appId: "1:218429120531:web:9c63a27a7dfa2dd26986c576",
+      measurementId: "G-DF05KWK6MZ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.signup = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          alert("Signup successful!");
+        })
+        .catch(error => {
+          alert("Signup error: " + error.message);
+        });
+    };
+
+    window.login = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          alert("Login successful!");
+        })
+        .catch(error => {
+          alert("Login error: " + error.message);
+        });
+    };
+  </script>
+</body>
+</html>
