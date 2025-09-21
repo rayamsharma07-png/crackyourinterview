@@ -7,109 +7,115 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Welcome to CrackYourInterview</h1>
-  <p>Your journey to confident speaking starts here.</p>
 
-  <button>Start Free Practice</button>
-
-  <section class="how-it-works">
-    <h2>How It Works</h2>
-    <div class="steps">
-      <div class="step">
-        <h3>🎤 Step 1: Practice Daily</h3>
-        <p>Answer mock interview questions and record your voice.</p>
-      </div>
-      <div class="step">
-        <h3>🧠 Step 2: Get AI Feedback</h3>
-        <p>Receive instant scores for fluency, grammar, and clarity.</p>
-      </div>
-      <div class="step">
-        <h3>📈 Step 3: Track Progress</h3>
-        <p>View your scores, improvement trends, and unlock achievements.</p>
-      </div>
+  <!-- Navigation -->
+  <header class="nav-banner">
+    <nav class="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">My Dashboard</a>
+      <a href="courses.html">Courses</a>
+      <a href="#">Webinars</a>
+      <a href="#">Feedback</a>
+    </nav>
+    <div class="nav-right" id="user-status">
+      <!-- Dynamic login/logout content will appear here -->
     </div>
-  </section>
+  </header>
 
-  <section class="quote-section">
-    <blockquote>“Confidence isn’t given. It’s practiced.”</blockquote>
-    <p class="quote-author">— CrackYourInterview</p>
-  </section>
+  <!-- Hero Section -->
+  <main class="hero-section">
+    <h1>Welcome to CrackYourInterview</h1>
+    <p class="tagline">“Speak with clarity. Interview with confidence. Succeed with purpose.”</p>
 
-  <section class="testimonials">
-    <h2>What Learners Say</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        <p>“CrackYourInterview helped me speak with clarity and confidence. I landed my dream job!”</p>
-        <span>— Priya, Software Engineer</span>
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>🎤 Step 1: Practice Daily</h3>
+          <p>Select from a pool of questions and record your answers.</p>
+          <button class="cta-button" onclick="window.location.href='practice.html'">Start Free Practice</button>
+        </div>
+        <div class="step">
+          <h3>🧠 Step 2: Get AI Feedback</h3>
+          <p>Receive instant feedback on your performance.</p>
+        </div>
+        <div class="step">
+          <h3>📈 Step 3: Track Progress</h3>
+          <p>Monitor your improvement over time.</p>
+        </div>
       </div>
-      <div class="testimonial">
-        <p>“The AI feedback was a game-changer. I improved my accent and got shortlisted in 3 interviews.”</p>
-        <span>— Arjun, Data Analyst</span>
+      <blockquote>“Confidence isn’t given. It’s earned.”</blockquote>
+    </section>
+
+    <section class="content-split">
+      <!-- Testimonials -->
+      <div class="testimonial-section">
+        <h2>What Learners Say</h2>
+        <div class="testimonial"><p>“CrackYourInterview helped me land my dream job.”</p><span>— Tim</span></div>
+        <div class="testimonial"><p>“The tool is purely authentic.”</p><span>— Dev</span></div>
+        <div class="testimonial"><p>“One of the best tools I’ve used.”</p><span>— John</span></div>
+        <div class="testimonial"><p>“I improved my fluency in just 10 days.”</p><span>— Meera</span></div>
+        <div class="testimonial"><p>“The accent feedback is incredibly accurate.”</p><span>— Arjun</span></div>
+        <div class="testimonial"><p>“I finally sound confident in US interviews.”</p><span>— Sarah</span></div>
+        <div class="testimonial"><p>“It helped me crack my dream job in London.”</p><span>— Aman</span></div>
       </div>
-      <div class="testimonial">
-        <p>“I practiced daily and tracked my progress. The visual scores kept me motivated!”</p>
-        <span>— Neha, Marketing Associate</span>
+
+      <!-- Sign Up/Login -->
+      <div class="auth-box">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="First Name" />
+        <input type="text" placeholder="Last Name" />
+        <input type="email" placeholder="Email" />
+        <input type="tel" placeholder="Mobile Number" />
+        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Confirm Password" />
+        <button class="primary-button">Sign Up</button>
+
+        <hr />
+
+        <h2>Login</h2>
+        <input type="email" placeholder="Email" id="login-email" />
+        <input type="password" placeholder="Password" />
+        <button class="secondary-button" onclick="login()">Login</button>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section class="cta-section">
-    <h2>Ready to Speak with Confidence?</h2>
-    <p>Start your free practice now and unlock your potential.</p>
-    <a href="#start" class="cta-button">Start Free Practice</a>
-  </section>
+  <!-- Login/Logout Script -->
+  <script>
+    const statusBox = document.getElementById("user-status");
+    const username = localStorage.getItem("username");
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
 
-  <hr />
+    if (!loggedIn) {
+      statusBox.innerHTML = `
+        <button class="nav-lock">🔒</button>
+        <span class="nav-dropdown">▼</span>
+      `;
+    } else {
+      statusBox.innerHTML = `
+        <span style="font-weight: bold;">Welcome, ${username}</span>
+        <button onclick="logout()" class="logout-button">Logout</button>
+      `;
+    }
 
-  <h2>Login / Signup</h2>
-  <input type="email" id="email" placeholder="Email" />
-  <input type="password" id="password" placeholder="Password" />
-  <br /><br />
-  <button onclick="signup()">Sign Up</button>
-  <button onclick="login()">Login</button>
+    function login() {
+      const email = document.getElementById("login-email").value;
+      const username = email.split("@")[0] || "User";
+      localStorage.setItem("username", username);
+      localStorage.setItem("loggedIn", "true");
+      location.reload();
+    }
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjVn0gFVaC1R4b4atHJDBgwR7yAipto",
-      authDomain: "crackyourinterview-db541.firebaseapp.com",
-      projectId: "crackyourinterview-db541",
-      storageBucket: "crackyourinterview-db541.appspot.com",
-      messagingSenderId: "218429120531",
-      appId: "1:218429120531:web:9c63a27a7dfa2dd26986c576",
-      measurementId: "G-DF05KWK6MZ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.signup = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          alert("Signup successful!");
-        })
-        .catch(error => {
-          alert("Signup error: " + error.message);
-        });
-    };
-
-    window.login = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          alert("Login successful!");
-        })
-        .catch(error => {
-          alert("Login error: " + error.message);
-        });
-    };
+    function logout() {
+      localStorage.clear();
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
   </script>
+
 </body>
 </html>
+<a href="https://flixier.com/tools/online-screen-recorder" target="_blank">
+  🎤 Record Your Answer
+</a>

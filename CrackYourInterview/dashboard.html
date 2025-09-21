@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard – CrackYourInterview</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav-banner">
+    <nav class="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">My Dashboard</a>
+      <a href="courses.html">Courses</a>
+      <a href="#">Webinars</a>
+      <a href="#">Feedback</a>
+    </nav>
+    <div class="nav-right" id="user-status">
+      <!-- Dynamic login/logout content will appear here -->
+    </div>
+  </header>
+
+  <!-- Dashboard Content -->
+  <main class="center-panel">
+    <section class="main-box">
+      <h1>My Dashboard</h1>
+      <p>📊 Your personalized interview prep insights will appear here.</p>
+      <p>🚧 Work in progress. This section will be available soon.</p>
+    </section>
+  </main>
+
+  <!-- Login/Logout Script -->
+  <script>
+    const statusBox = document.getElementById("user-status");
+    const username = localStorage.getItem("username");
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+    if (!loggedIn) {
+      window.location.href = "signup.html";
+    } else {
+      statusBox.innerHTML = `
+        <span style="font-weight: bold;">Welcome, ${username}</span>
+        <button onclick="logout()" class="logout-button">Logout</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.clear();
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

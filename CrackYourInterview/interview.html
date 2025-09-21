@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock Interview – CrackYourInterview</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav-banner">
+    <nav class="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">My Dashboard</a>
+      <a href="courses.html">Courses</a>
+      <a href="#">Webinars</a>
+      <a href="#">Feedback</a>
+    </nav>
+    <div class="nav-right" id="user-status"></div>
+  </header>
+
+  <!-- Interview Section -->
+  <main class="center-panel">
+    <section class="main-box">
+      <h1>Start Your Mock Interview</h1>
+      <p>Select your preferred accent and begin the session.</p>
+
+      <label for="accent-select">Choose Accent:</label>
+      <select id="accent-select">
+        <option value="en-US">American English</option>
+        <option value="en-GB">British English</option>
+        <option value="en-IN">Indian English</option>
+      </select>
+
+      <button class="primary-button" id="start-interview">Start Interview</button>
+      <button class="secondary-button" id="stop-interview" disabled>Stop Interview</button>
+
+      <audio id="audio-playback" controls style="margin-top: 20px; display: none;"></audio>
+      <div id="feedback-box" style="margin-top: 30px;"></div>
+    </section>
+  </main>
+
+  <!-- Script -->
+  <script>
+    const statusBox = document.getElementById("user-status");
+    const username = localStorage.getItem("username");
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+    if (!loggedIn) {
+      window.location.href = "signup.html";
+    } else {
+      statusBox.innerHTML = `
+        <span style="font-weight: bold;">Welcome, ${username}</span>
+        <button onclick="logout()" class="logout-button">Logout</button>
+      `;
+    }
+
+    function logout() {
+      localStorage.clear();
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
+
+    // Interview logic
+    const startBtn = document.getElementById("start-interview");
+    const stopBtn = document.getElementById("stop-interview");
+    const accentSelect = document.getElementById("accent-select");
+    const audioPlayback = document.getElementById("audio-playback");
+    const feedbackBox = document.getElementById("feedback-box");
+
+    let mediaRecorder;
+    let audioChunks = [];
+    let questionIndex = 0;
+    const questions = [
+      "Tell me about yourself.",
+      "Describe a time you faced a challenge at work.",
+      "How do you handle pressure?",
+      "Why should we hire you?",
+      "Where do you see yourself in five years?"
+    ];
+
+    function speakQuestion(text, accent) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = accent;
+      speechSynthesis.speak(utterance);
+    }
+
+    startBtn.addEventListener("click", async () => {
+      const accent = accentSelect.value;
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.ondataavailable = e => {
+        audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        audioPlayback.src = audioUrl;
+        audioPlayback.style.display = "block";
+
+        // Send to backend for real AI analysis
+        const formData = new FormData();
+        formData.append("audio", audioBlob);
+        formData.append("username", username);
+        formData.append("accent", accent);
+
+        try {
+          const response = await fetch("https://your-backend.com/analyze-audio", {
+            method: "POST",
+            body: formData
+          });
+
+          const result = await response.json();
+
+          feedbackBox.innerHTML = `
+            <h2>AI Interview Feedback</h2>
+            <ul>
+              <li><strong>Accent:</strong> ${result.accentFeedback}</li>
+              <li><strong>Behavior:</strong> ${result.behaviorFeedback}</li>
+              <li><strong>Situational Answers:</strong> ${result.answerFeedback}</li>
+              <li><strong>Positives:</strong> ${result.positives.join(", ")}</li>
+              <li><strong>Negatives:</strong> ${result.negatives.join(", ")}</li>
+            </ul>
+            <h3 style="color: ${result.hired ? 'green' : 'red'};">
+              ${result.hired ? '✅ Verdict: You would be hired!' : '❌ Verdict: Not hired this time.'}
+            </h3>
+          `;
+        } catch (error) {
+          feedbackBox.innerHTML = `<p style="color:red;">Error analyzing audio. Please try again later.</p>`;
+        }
+      };
+
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+
+      // Ask questions with delay
+      questionIndex = 0;
+      const askNext = () => {
+        if (questionIndex < questions.length) {
+          speakQuestion(questions[questionIndex], accent);
+          questionIndex++;
+          setTimeout(askNext, 6000);
+        }
+      };
+      askNext();
+    });
+
+    stopBtn.addEventListener("click", () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  </script>
+
+</body>
+</html>
